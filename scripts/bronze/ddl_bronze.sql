@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS bronze.unstructured_data;
 
 CREATE TABLE bronze.unstructured_data(
-	id INT PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	track_name TEXT,
 	track_album_name TEXT,
 	track_artist TEXT,
@@ -23,3 +23,4 @@ CREATE TABLE bronze.unstructured_data(
 	key INT,
 	duration_ms INT
 );
+
