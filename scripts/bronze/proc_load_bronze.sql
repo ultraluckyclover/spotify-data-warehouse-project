@@ -5,6 +5,8 @@ CREATE OR REPLACE PROCEDURE bronze.load_bronze()
 LANGUAGE plpgsql
 AS $$
 BEGIN
+	RAISE LOG 'Loading bronze layer...'
+
     -- Clear data from table
     TRUNCATE TABLE bronze.unstructured_data;
 
@@ -13,5 +15,7 @@ BEGIN
     FROM '/path/to/your/file.csv'
     DELIMITER ','
     CSV HEADER;
+	
+	RAISE LOG 'Bronze layer loaded successfully!'
 END;
 $$;
