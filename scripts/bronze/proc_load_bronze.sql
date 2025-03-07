@@ -6,16 +6,22 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
 	RAISE LOG 'Loading bronze layer...';
-
-    -- Clear data from table
-    TRUNCATE TABLE bronze.unstructured_data;
-
-    -- Load data to table
-    COPY bronze.unstructured_data
-    FROM '/path/to/your/file.csv'
-    DELIMITER ','
-    CSV HEADER;
 	
-	RAISE LOG 'Bronze layer loaded successfully!';
+	BEGIN 
+		RAISE LOG 'Truncating table: bronze.unstructured_data';
+		TRUNCATE TABLE bronze.unstructured_data;
+
+		RAISE LOG 'Loading table: bronze.unstructured_data';
+		COPY bronze.unstructured_data
+		FROM '/path/to/your/file.csv'
+		DELIMITER ','
+		CSV HEADER;
+		
+		RAISE LOG 'Bronze layer loaded successfully!';
+
+	EXCEPTION
+		WHEN OTHERS THEN 
+			RAISE EXCEPTION 'Error state: %, Error Msg: %', SQLSTATE, SQLERRM;
+	END;
 END;
 $$;
