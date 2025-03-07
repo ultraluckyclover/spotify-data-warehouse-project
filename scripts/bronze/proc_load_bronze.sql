@@ -1,4 +1,5 @@
 -- This load procedure works as long as your csv file is accessible to the PostgreSQL server
+-- Otherwise, load from the client side in psql using \copy or using pgAdmin's import tool
 
 CREATE OR REPLACE PROCEDURE bronze.load_bronze
 LANGUAGE plpgsql
