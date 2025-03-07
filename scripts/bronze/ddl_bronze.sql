@@ -1,7 +1,7 @@
 /*
-=============================
+=============================================
 Create table for raw data in bronze layer
-=============================
+=============================================
 
 This script creates a new table called unstructured_data in the bronze
 layer after checking if it already exists.
