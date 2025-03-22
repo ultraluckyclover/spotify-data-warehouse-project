@@ -25,22 +25,21 @@ CREATE TABLE silver.subgenres (
 );
 
 DROP TABLE IF EXISTS silver.tracks CASCADE;
-CREARE TABLE silver.tracks (
+CREATE TABLE silver.tracks (
 	track_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	track_name TEXT NOT NULL,
 	album_id INT REFERENCES silver.albums(album_id) ON DELETE CASCADE,
 	energy REAL,
 	tempo SMALLINT,
-	danceability NUMERIC(4,3),
-	loudness NUMERIC(5,3),
-	liveness NUMERIC(4,3),
-	valence NUMERIC(4,3),
+	danceability REAL,
+	loudness REAL,
+	liveness REAL,
+	valence REAL,
 	speechiness REAL,
 	instrumentalness REAL,
-	acousticness NUMERIC(6,5),
-	mode INT,
-	time_signature INT,
-	key INT,
+	acousticness REAL,
+	mode BOOLEAN,
+	time_signature SMALLINT,
+	key SMALLINT,
 	duration_ms INT
 );
-
