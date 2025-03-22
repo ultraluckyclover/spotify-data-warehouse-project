@@ -1,3 +1,5 @@
+-- ENTITY TABLES
+
 DROP TABLE IF EXISTS silver.artists;
 CREATE TABLE silver.artists (
 	artist_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -43,4 +45,28 @@ CREATE TABLE silver.tracks (
 	time_signature SMALLINT,
 	key SMALLINT,
 	duration_ms INT
+);
+
+
+-- JOIN TABLES
+
+DROP TABLE IF EXISTS silver.track_artist;
+CREATE TABLE silver.track_artist (
+track_id INT REFERENCES silver.tracks(track_id) ON DELETE CASCADE,
+artist_id INT REFERENCES silver.artists(artist_id) ON DELETE CASCADE,
+PRIMARY KEY (track_id, artist_id)
+);
+
+DROP TABLE IF EXISTS silver.track_genre;
+CREATE TABLE silver.track_genre (
+track_id INT REFERENCES silver.tracks(track_id) ON DELETE CASCADE,
+genre_id INT REFERENCES silver.genres(genre_id) ON DELETE CASCADE,
+PRIMARY KEY (track_id, genre_id)
+);
+
+DROP TABLE IF EXISTS silver.album_artist;
+CREATE TABLE silver.album_artist (
+album_id INT REFERENCES silver.albums(album_id) ON DELETE CASCADE,
+artist_id INT REFERENCES silver.artists(artist_id) ON DELETE CASCADE,
+PRIMARY KEY (album_id, artist_id)
 );
