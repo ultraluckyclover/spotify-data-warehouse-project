@@ -28,7 +28,7 @@ CREATE TABLE silver.subgenres (
 DROP TABLE IF EXISTS silver.tracks CASCADE;
 CREATE TABLE silver.tracks (
 	track_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	track_name TEXT NOT NULL,
+	track_name TEXT NOT NULL UNIQUE,
 	album_id INT REFERENCES silver.albums(album_id) ON DELETE CASCADE,
 	energy REAL,
 	tempo SMALLINT,
@@ -44,4 +44,3 @@ CREATE TABLE silver.tracks (
 	key SMALLINT,
 	duration_ms INT
 );
-
