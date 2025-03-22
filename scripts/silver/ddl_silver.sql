@@ -7,8 +7,9 @@ CREATE TABLE silver.artists (
 DROP TABLE IF EXISTS silver.albums CASCADE;
 CREATE TABLE silver.albums (
 	album_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	album_name TEXT NOT NULL UNIQUE,
-	album_release_year INT NOT NULL
+	album_name TEXT NOT NULL,
+	album_release_year INT NOT NULL,
+	CONSTRAINT albums_name_and_release_year UNIQUE (album_name, album_release_year)
 );
 
 DROP TABLE IF EXISTS silver.genres CASCADE;
@@ -43,3 +44,4 @@ CREATE TABLE silver.tracks (
 	key SMALLINT,
 	duration_ms INT
 );
+
