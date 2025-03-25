@@ -70,3 +70,10 @@ FROM temp_artists ta
 JOIN silver.tracks t ON ta.track_name = t.track_name
 JOIN silver.artists a ON ta.raw_artist_name = a.artist_name
 ON CONFLICT (track_id, artist_id) DO NOTHING;
+
+INSERT INTO silver.track_genre (track_id, genre_id)
+SELECT t.track_id, g.genre_id
+FROM bronze.unstructured_data b
+JOIN silver.tracks t ON b.track_name = t.track_name
+JOIN silver.genres g ON b.playlist_genre = g.genre_name
+ON CONFLICT (track_id, genre_id) DO NOTHING;
