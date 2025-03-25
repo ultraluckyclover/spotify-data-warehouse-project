@@ -58,9 +58,11 @@ ON CONFLICT DO NOTHING;
 
 -- JUNCTION TABLES
 
+DROP TABLE IF EXISTS temp_artists;
 CREATE TEMPORARY TABLE temp_artists AS 
 SELECT 
-track_name, 
+track_name,
+track_album_name,
 TRIM(UNNEST(STRING_TO_ARRAY(track_artist, ','))) AS raw_artist_name
 FROM bronze.unstructured_data;
 
@@ -77,3 +79,10 @@ FROM bronze.unstructured_data b
 JOIN silver.tracks t ON b.track_name = t.track_name
 JOIN silver.genres g ON b.playlist_genre = g.genre_name
 ON CONFLICT (track_id, genre_id) DO NOTHING;
+
+INSERT INTO silver.album_artist (album_id, artist_id)
+SELECT alb.album_id, art.artist_id
+FROM temp_artists ta
+JOIN silver.albums alb ON ta.track_album_name = alb.album_name
+JOIN silver.artists art ON ta.raw_artist_name = art.artist_name
+ON CONFLICT (album_id, artist_id) DO NOTHING;
