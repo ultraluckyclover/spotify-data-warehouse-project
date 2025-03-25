@@ -1,17 +1,21 @@
 -- ENTITY TABLES
+TRUNCATE TABLE silver.artists;
 INSERT INTO silver.artists (artist_name)
 SELECT DISTINCT TRIM(UNNEST(STRING_TO_ARRAY(track_artist, ','))) AS artist_name
 FROM bronze.unstructured_data;
 
+TRUNCATE TABLE silver.albums;
 INSERT INTO silver.albums (album_name, album_release_year)
 SELECT DISTINCT track_album_name, track_release_year
 FROM bronze.unstructured_data
 ON CONFLICT (album_name, album_release_year) DO NOTHING;
 
+TRUNCATE TABLE silver.genres;
 INSERT INTO silver.genres (genre_name)
 SELECT DISTINCT playlist_genre
 FROM bronze.unstructured_data;
 
+TRUNCATE TABLE silver.subgenres;
 INSERT INTO silver.subgenres (subgenre_name, genre_id)
 SELECT DISTINCT 
 b.playlist_subgenre,
@@ -19,6 +23,7 @@ g.genre_id
 FROM bronze.unstructured_data b
 JOIN silver.genres g ON b.playlist_genre = g.genre_name;
 
+TRUNCATE TABLE silver.tracks;
 INSERT INTO silver.tracks (
 track_name,
 album_id,
@@ -66,6 +71,7 @@ track_album_name,
 TRIM(UNNEST(STRING_TO_ARRAY(track_artist, ','))) AS raw_artist_name
 FROM bronze.unstructured_data;
 
+TRUNCATE TABLE silver.track_artist;
 INSERT INTO silver.track_artist (track_id, artist_id)
 SELECT t.track_id, a.artist_id
 FROM temp_artists ta
@@ -73,6 +79,7 @@ JOIN silver.tracks t ON ta.track_name = t.track_name
 JOIN silver.artists a ON ta.raw_artist_name = a.artist_name
 ON CONFLICT (track_id, artist_id) DO NOTHING;
 
+TRUNCATE TABLE silver.track_genre;
 INSERT INTO silver.track_genre (track_id, genre_id)
 SELECT t.track_id, g.genre_id
 FROM bronze.unstructured_data b
@@ -80,6 +87,7 @@ JOIN silver.tracks t ON b.track_name = t.track_name
 JOIN silver.genres g ON b.playlist_genre = g.genre_name
 ON CONFLICT (track_id, genre_id) DO NOTHING;
 
+TRUNCATE TABLE silver.album_artist;
 INSERT INTO silver.album_artist (album_id, artist_id)
 SELECT alb.album_id, art.artist_id
 FROM temp_artists ta
