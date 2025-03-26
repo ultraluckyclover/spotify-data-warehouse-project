@@ -21,13 +21,11 @@ BEGIN
 		RAISE LOG 'Truncating table: silver.albums';	
 		TRUNCATE TABLE silver.albums CASCADE;
 	
-		RAISE LOG 'Loading table: silver.albums';
-		
+		RAISE LOG 'Loading table: silver.albums';		
 		INSERT INTO silver.albums (album_name, album_release_year)
 		SELECT DISTINCT track_album_name, track_release_year
 		FROM bronze.unstructured_data
 		ON CONFLICT (album_name, album_release_year) DO NOTHING;
-	
 		RAISE LOG 'silver.albums loaded successfully!';
 	
 		RAISE LOG 'Truncating table: silver.genres';
