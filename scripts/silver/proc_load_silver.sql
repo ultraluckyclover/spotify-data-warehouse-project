@@ -10,7 +10,7 @@ BEGIN
 		RAISE LOG 'Loading entity tables...';
 		
 		RAISE LOG 'Truncating table: silver.artists';
-		TRUNCATE TABLE silver.artists CASCADE;
+		TRUNCATE TABLE silver.artists RESTART IDENTITY CASCADE;
 	
 		RAISE LOG 'Loading table: silver.artists';
 		INSERT INTO silver.artists (artist_name)
@@ -19,17 +19,18 @@ BEGIN
 		RAISE LOG 'silver.artists loaded successfully!';
 	
 		RAISE LOG 'Truncating table: silver.albums';	
-		TRUNCATE TABLE silver.albums CASCADE;
+		TRUNCATE TABLE silver.albums RESTART IDENTITY CASCADE;
 	
-		RAISE LOG 'Loading table: silver.albums';		
+		RAISE LOG 'Loading table: silver.albums';
 		INSERT INTO silver.albums (album_name, album_release_year)
 		SELECT DISTINCT track_album_name, track_release_year
 		FROM bronze.unstructured_data
 		ON CONFLICT (album_name, album_release_year) DO NOTHING;
+	
 		RAISE LOG 'silver.albums loaded successfully!';
 	
 		RAISE LOG 'Truncating table: silver.genres';
-		TRUNCATE TABLE silver.genres CASCADE;
+		TRUNCATE TABLE silver.genres RESTART IDENTITY CASCADE;
 	
 		RAISE LOG 'Loading table: silver.genres';
 		INSERT INTO silver.genres (genre_name)
@@ -38,7 +39,7 @@ BEGIN
 		RAISE LOG 'silver.genres loaded successfully!';
 	
 		RAISE LOG 'Truncating table: silver.subgenres';
-		TRUNCATE TABLE silver.subgenres CASCADE;
+		TRUNCATE TABLE silver.subgenres RESTART IDENTITY CASCADE;
 	
 		RAISE LOG 'Loading table: silver.subgenres';
 		INSERT INTO silver.subgenres (subgenre_name, genre_id)
@@ -50,7 +51,7 @@ BEGIN
 		RAISE LOG 'silver.subgenres loaded successfully!';
 	
 		RAISE LOG 'Truncating table: silver.tracks';
-		TRUNCATE TABLE silver.tracks CASCADE;
+		TRUNCATE TABLE silver.tracks RESTART IDENTITY CASCADE;
 	
 		RAISE LOG 'Loading table: silver.tracks';
 		INSERT INTO silver.tracks (
@@ -146,3 +147,4 @@ BEGIN
 	END;
 END;
 $$;
+
