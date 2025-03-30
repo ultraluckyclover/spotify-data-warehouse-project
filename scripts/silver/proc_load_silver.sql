@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE PROCEDURE silver.load_silver()
 LANGUAGE plpgsql
 AS $$
@@ -83,9 +84,27 @@ BEGIN
 		b.speechiness,
 		b.instrumentalness,
 		b.acousticness,
-		b.mode::BOOLEAN,
+		CASE
+			WHEN b.mode = 0 THEN 'Minor'
+			WHEN b.mode = 1 THEN 'Major'
+			ELSE NULL
+		END as mode,
 		b.time_signature,
-		b.key,
+		CASE 
+			WHEN b.key = 0 THEN 'C'
+			WHEN b.key = 1 THEN 'C#'
+			WHEN b.key = 2 THEN 'D'
+			WHEN b.key = 3 THEN 'D#'
+			WHEN b.key = 4 THEN 'E'
+			WHEN b.key = 5 THEN 'F'
+			WHEN b.key = 6 THEN 'F#'
+			WHEN b.key = 7 THEN 'G'
+			WHEN b.key = 8 THEN 'G#'
+			WHEN b.key = 9 THEN 'A'
+			WHEN b.key = 10 THEN 'A#'
+			WHEN b.key = 11 THEN 'B'
+			ELSE NULL
+		END as key,
 		b.duration_ms
 		FROM bronze.unstructured_data b
 		JOIN silver.albums a ON b.track_album_name = a.album_name
@@ -147,4 +166,3 @@ BEGIN
 	END;
 END;
 $$;
-
