@@ -41,12 +41,11 @@ CREATE TABLE silver.tracks (
 	speechiness REAL,
 	instrumentalness REAL,
 	acousticness REAL,
-	mode BOOLEAN,
+	mode TEXT,
 	time_signature SMALLINT,
-	key SMALLINT,
+	key TEXT,
 	duration_ms INT
 );
-
 
 -- JOIN TABLES
 
