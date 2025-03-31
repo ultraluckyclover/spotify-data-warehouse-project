@@ -102,3 +102,30 @@ WHERE subgenre_name != TRIM(subgenre_name);
 -- +++++++++++++++++++++++++++++++++
 -- 			JUNCTION TABLES
 -- +++++++++++++++++++++++++++++++++
+
+--=====================================
+--			silver.album_artist
+--=====================================
+
+-- Checking for duplicates or NULLs
+SELECT album_id, artist_id, COUNT(*) FROM silver.album_artist
+GROUP BY album_id, artist_id
+HAVING COUNT(*) > 1 OR album_id IS NULL OR artist_id IS NULL;
+
+--=====================================
+--			silver.track_artist
+--=====================================
+
+-- Checking for duplicates or NULLs
+SELECT track_id, artist_id, COUNT(*) FROM silver.track_artist
+GROUP BY track_id, artist_id
+HAVING COUNT(*) > 1 OR track_id IS NULL OR artist_id IS NULL;
+
+--=====================================
+--			silver.track_genre
+--=====================================
+
+-- Checking for duplicates or NULLs
+SELECT track_id, genre_id, COUNT(*) FROM silver.track_genre
+GROUP BY track_id, genre_id
+HAVING COUNT(*) > 1 OR track_id IS NULL OR genre_id IS NULL;
