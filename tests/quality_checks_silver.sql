@@ -1,10 +1,10 @@
 -- +++++++++++++++++++++++++++++++++
--- 			ENTITY TABLES
+-- ENTITY TABLES
 -- +++++++++++++++++++++++++++++++++
 
---==================================
---			silver.tracks
---==================================
+-- ==================================
+-- silver.tracks
+--  ==================================
 
 -- Checks for duplicates or NULLs for tracks/artist
 SELECT track_name, album_id, COUNT(*) FROM silver.tracks
@@ -39,9 +39,9 @@ SELECT mode FROM silver.tracks
 WHERE mode != TRIM(mode);
 
 
---===================================
---			silver.albums
---===================================
+-- ===================================
+-- silver.albums
+-- ===================================
 
 -- Checking for duplicates or NULLs
 SELECT album_name, album_release_year, COUNT(*) FROM silver.albums
@@ -58,9 +58,9 @@ WHERE CAST(album_release_year AS TEXT) !~ '^[0-9]{4}$'
 OR album_release_year NOT BETWEEN 1900 AND EXTRACT(YEAR FROM CURRENT_DATE);
 
 
---===================================
---			silver.artists
---===================================
+-- ===================================
+-- silver.artists
+-- ===================================
 
 -- Checking for duplicates or NULLs
 SELECT artist_name, COUNT(*) FROM silver.artists
@@ -71,9 +71,9 @@ HAVING COUNT(*) > 1 OR artist_name IS NULL;
 SELECT artist_name FROM silver.artists
 WHERE artist_name != TRIM(artist_name);
 
---===================================
---			silver.genres
---===================================
+-- ===================================
+-- silver.genres
+-- ===================================
 
 -- Checking for duplicates or NULLs
 SELECT genre_name, COUNT(*) FROM silver.genres
@@ -84,9 +84,9 @@ HAVING COUNT(*) > 1 OR 	genre_name IS NULL;
 SELECT genre_name FROM silver.genres
 WHERE genre_name != TRIM(genre_name);
 
---=====================================
---			silver.subgenres
---=====================================
+-- =====================================
+-- silver.subgenres
+-- =====================================
 
 -- Checking for duplicates or NULLs
 SELECT subgenre_name, genre_id, COUNT(*) FROM silver.subgenres
@@ -100,30 +100,30 @@ WHERE subgenre_name != TRIM(subgenre_name);
 
 
 -- +++++++++++++++++++++++++++++++++
--- 			JUNCTION TABLES
+-- JUNCTION TABLES
 -- +++++++++++++++++++++++++++++++++
 
---=====================================
---			silver.album_artist
---=====================================
+-- =====================================
+-- silver.album_artist
+-- =====================================
 
 -- Checking for duplicates or NULLs
 SELECT album_id, artist_id, COUNT(*) FROM silver.album_artist
 GROUP BY album_id, artist_id
 HAVING COUNT(*) > 1 OR album_id IS NULL OR artist_id IS NULL;
 
---=====================================
---			silver.track_artist
---=====================================
+-- =====================================
+-- silver.track_artist
+-- =====================================
 
 -- Checking for duplicates or NULLs
 SELECT track_id, artist_id, COUNT(*) FROM silver.track_artist
 GROUP BY track_id, artist_id
 HAVING COUNT(*) > 1 OR track_id IS NULL OR artist_id IS NULL;
 
---=====================================
---			silver.track_genre
---=====================================
+-- =====================================
+-- silver.track_genre
+-- =====================================
 
 -- Checking for duplicates or NULLs
 SELECT track_id, genre_id, COUNT(*) FROM silver.track_genre
